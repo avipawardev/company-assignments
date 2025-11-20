@@ -13,3 +13,9 @@ services:
     envVars:
       - key: VITE_API_BASE
         value: "https://refer-employee.onrender.com"
+    # Route rewrite so SPA client-side routes return index.html (prevents 404 on reload)
+    routes:
+      - type: redirect
+        source: "/*"
+        destination: "/index.html"
+        status: 200
