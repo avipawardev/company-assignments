@@ -1,0 +1,15 @@
+# Optional: Render static site example
+# See: https://render.com/docs/static-sites
+# This file is illustrative — set env vars in the Render dashboard instead of committing secrets.
+
+services:
+  - type: static
+    name: referrals-client
+    env: static
+    region: oregon
+    branch: main
+    buildCommand: "npm ci && npm run build"
+    root: "dist"
+    envVars:
+      - key: VITE_API_BASE
+        value: "https://refer-employee.onrender.com"
