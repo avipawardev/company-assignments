@@ -1,0 +1,35 @@
+# Combined Render services for client (static site) and server (web service)
+# Edit environment variables in the Render dashboard — do NOT commit secrets here.
+
+services:
+  - type: static
+    name: referrals-client
+    env: static
+    region: oregon
+    branch: main
+    buildCommand: "cd client && npm ci && npm run build"
+    root: "client/dist"
+    envVars:
+      - key: VITE_API_BASE
+        value: "https://refer-employee.onrender.com"
+    # SPA rewrite
+    routes:
+      - type: rewrite
+        source: "/*"
+        destination: "/index.html"
+
+  - type: web
+    name: referrals-server
+    env: node
+    region: oregon
+    branch: main
+    # Build/install in server folder
+    buildCommand: "cd server && npm ci"
+    startCommand: "node server/server.js"
+    root: server
+    # Do not store secrets here; set them in Render dashboard
+    envVars:
+      - key: PORT
+        value: "10000"
+      - key: MONGO_URI
+        value: ""
